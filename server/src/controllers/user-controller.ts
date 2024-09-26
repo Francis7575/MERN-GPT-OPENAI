@@ -1,8 +1,12 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import User from "../models/User";
 import { hash } from "bcrypt";
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getAllUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     //get all users
     const users = await User.find();
@@ -16,6 +20,7 @@ export const getAllUsers = async (req: Request, res: Response) => {
 export const userSignup = async (
   req: Request,
   res: Response,
+  next: NextFunction
 ) => {
   try {
     //user signup
@@ -24,7 +29,7 @@ export const userSignup = async (
     const user = new User({ name, email, password: hashedPassword });
     await user.save();
     res.status(201).json({ message: "OK", id: user._id.toString() });
-  }  catch (error: unknown) {
+  } catch (error: unknown) {
     console.log(error);
     res.status(500).json({ message: "Unable to create the user" });
   }
