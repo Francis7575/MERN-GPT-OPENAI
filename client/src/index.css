@@ -1,0 +1,12 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #05101c;
+  color: white;
+  font-family: "Roboto Slab", serif;
+}
+
+.image-inverted {
+  filter: invert(100%);
+}
