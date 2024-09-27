@@ -9,6 +9,7 @@ body {
 
 .image-inverted {
   filter: invert(100%);
+<<<<<<< HEAD
 }
 
 .nav-link {
@@ -20,4 +21,6 @@ body {
   border-radius: 10px;
   text-decoration: none;
   letter-spacing: 1px;
+=======
+>>>>>>> d738dd7d0b2d77d3037aeb7e48b76406f4db92bd
 }
