@@ -1,6 +1,7 @@
 import express from "express"
 import {config} from "dotenv"
 import morgan from "morgan"
+import cookieParser from "cookie-parser";
 import appRouter from "./routes"; 
 config()
 
@@ -8,6 +9,7 @@ const app = express();
 
 // middlewares
 app.use(express.json())
+app.use(cookieParser(process.env.COOKIE_SECRET));
 
 //remove it in production
 app.use(morgan("dev"));
