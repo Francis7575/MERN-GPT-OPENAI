@@ -3,6 +3,11 @@ export type LoginForm = {
   password: string
 }
 
+export type ValidationError = {
+  msg: string;
+  param: string;
+}
+
 export type SignupForm = {
   name: string
   email: string
