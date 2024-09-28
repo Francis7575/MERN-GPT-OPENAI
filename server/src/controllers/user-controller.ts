@@ -101,15 +101,34 @@ export const userLogin = async (
       signed: true,
     });
 
-    res
-      .status(200)
-      .json({
-        message: "Succesfully Login!",
-        name: user.name,
-        email: user.email,
-      });
+    res.status(200).json({
+      message: "Succesfully Login!",
+      name: user.name,
+      email: user.email,
+    });
   } catch (error: unknown) {
     console.log(error);
     res.status(500).json({ message: "Unable to login" });
+  }
+};
+
+export const verifyUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    //user token check
+    const user = await User.findById(res.locals.jwtData.id);
+    if (!user) {
+      res.status(401).send("User not registered OR Token malfunctioned");
+    }
+    if (user!._id.toString() !== res.locals.jwtData.id) {
+      res.status(401).send("Permissions didn't match");
+    }
+    res.status(200).json({ message: "OK", name: user!.name, email: user!.email });
+  } catch (error) {
+    console.log(error);
+    res.status(200).json({ message: "Error verifying user" });
   }
 };

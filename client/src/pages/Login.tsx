@@ -1,7 +1,7 @@
 import { IoIosLogIn } from "react-icons/io";
 import { Box, Typography, Button } from "@mui/material";
 import CustomizedInput from "../components/shared/CustomizedInput";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import Airobot from "/airobot.png"
 import { LoginForm } from "../types/types";
 import { toast } from "react-hot-toast";
@@ -15,6 +15,26 @@ const Login = () => {
     email: '',
     password: ''
   })
+  
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/users/auth-status`, {
+          credentials: 'include'
+        });
+        const data = await response.json()
+        if (data) {
+          auth?.setUser({ email: data.email, name: data.name });
+          auth?.setIsLoggedIn(true);
+          toast.success("Already logged in!");
+        }
+      } catch (error) {
+        console.error("CheckAuthStatus error:", error);
+        throw error;
+      }
+    }
+    checkAuthStatus();
+  }, [])
 
   const handleLogin = async (formData: LoginForm) => {
     try {
@@ -32,7 +52,7 @@ const Login = () => {
       }
       const data = await response.json();
       return data;
-  
+
     } catch (error) {
       console.error("Fetch error:", error);
       throw error;
@@ -95,7 +115,7 @@ const Login = () => {
               Login
             </Typography>
             <Box sx={{ display: "flex", flexDirection: "column", gap: "20px", marginTop: "20px" }}>
-              <CustomizedInput type="email" name="email" label="Email" onChange={handleChange} value={formData.email}/>
+              <CustomizedInput type="email" name="email" label="Email" onChange={handleChange} value={formData.email} />
               <CustomizedInput type="password" name="password" label="Password" onChange={handleChange} value={formData.password} />
             </Box>
             <Box sx={{ margin: "auto", maxWidth: "450px", width: "100%", mt: 2 }}>
