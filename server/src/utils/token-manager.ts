@@ -21,20 +21,32 @@ export const verifyToken = async (
   next: NextFunction
 ): Promise<void> => {
   const token = req.signedCookies[`${COOKIE_NAME}`];
+  
+  // Check if the token is provided
   if (!token || token.trim() === "") {
     res.status(401).json({ message: "Token Not Received" });
+    return;
   }
-  
-  return new Promise<void>((resolve, reject) => {
-    return jwt.verify(token, process.env.JWT_SECRET!, (err: any, success: any) => {
+
+  // Return a promise to verify the token
+  const verifyPromise = new Promise((resolve, reject) => {
+    jwt.verify(token, process.env.JWT_SECRET!, (err: any, decoded: any) => {
       if (err) {
-        reject(err.message);
-        return res.status(401).json({ message: "Token Expired" });
+        reject(err); // Reject the promise on error
       } else {
-        resolve();
-        res.locals.jwtData = success;
-        return next();
+        resolve(decoded); // Resolve the promise with the decoded data
       }
     });
   });
+
+  // Use .then() and .catch() to handle the promise
+  verifyPromise
+    .then((decoded) => {
+      res.locals.jwtData = decoded; // Store the decoded data in res.locals
+      return next(); // Proceed to the next middleware or route handler
+    })
+    .catch((error) => {
+      console.error("Verification error:", error); // Log the error
+      res.status(401).json({ message: "Token Expired" }); // Respond with a 401 status
+    });
 };

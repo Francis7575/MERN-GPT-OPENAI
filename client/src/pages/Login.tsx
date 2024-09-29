@@ -6,11 +6,14 @@ import Airobot from "/airobot.png"
 import { LoginForm, ValidationError } from "../types/types";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../context/authContext"
+import { useNavigate } from "react-router-dom";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 const Login = () => {
   const auth = useAuth();
+  const navigate = useNavigate()
+
   const [formData, setFormData] = useState<LoginForm>({
     email: '',
     password: ''
@@ -40,7 +43,7 @@ const Login = () => {
       }
     }
     checkAuthStatus();
-  }, [auth])
+  }, [])
 
   const handleLogin = async (formData: LoginForm) => {
     try {
@@ -53,15 +56,15 @@ const Login = () => {
         credentials: "include",
       })
 
-      // if (!response.ok) {
+      if (!response.ok) {
       //   const errorData = await response.json();
       //   if (response.status === 422) {
       //     console.error("Validation Errors:", errorData.errors);
       //     setValidationErrors(errorData.errors); // Update state with validation errors
       //     return; // Exit early if there are validation errors
       //   }
-      //   throw new Error(`HTTP error! Status: ${response.status}`);
-      // }
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
       const data = await response.json();
       return data;
@@ -74,7 +77,7 @@ const Login = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setValidationErrors([]);
+    // setValidationErrors([]);
 
     // Frontend validation
     // if (!formData.email) {
@@ -98,6 +101,12 @@ const Login = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (auth?.isLoggedIn) {
+      navigate("/chat")
+    }
+  }, [auth?.isLoggedIn])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

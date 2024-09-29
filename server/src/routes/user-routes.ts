@@ -9,4 +9,4 @@ userRoutes.get("/", getAllUsers)
 userRoutes.post("/signup", validate(signupValidator), userSignup)
 userRoutes.post("/login", validate(loginValidator), userLogin);
 userRoutes.get("/auth-status", verifyToken, verifyUser);
-export default userRoutes
+export default userRoutes 
