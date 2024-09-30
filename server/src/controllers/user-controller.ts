@@ -3,6 +3,7 @@ import User from "../models/User";
 import { compare, hash } from "bcrypt";
 import { createToken } from "../utils/token-manager";
 import { COOKIE_NAME } from "../utils/constants";
+import { AnyARecord } from "dns";
 
 export const getAllUsers = async (
   req: Request,
@@ -126,9 +127,42 @@ export const verifyUser = async (
     if (user!._id.toString() !== res.locals.jwtData.id) {
       res.status(401).send("Permissions didn't match");
     }
-    res.status(200).json({ message: "OK", name: user!.name, email: user!.email });
+    res
+      .status(200)
+      .json({ message: "OK", name: user!.name, email: user!.email });
   } catch (error) {
     console.log(error);
     res.status(200).json({ message: "Error verifying user" });
+  }
+};
+
+export const userLogout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    //user token check
+    const user = await User.findById(res.locals.jwtData.id);
+    if (!user) {
+      res.status(401).send("User not registered OR Token malfunctioned");
+      return;
+    }
+    if (user._id.toString() !== res.locals.jwtData.id) {
+      res.status(401).send("Permissions didn't match");
+      return;
+    }
+
+    res.clearCookie(COOKIE_NAME, {
+      httpOnly: true,
+      domain: "localhost",
+      signed: true,
+      path: "/",
+    });
+
+    res.status(200).json({ message: "OK", name: user.name, email: user.email });
+  } catch (error: any) {
+    res.status(200).json({ message: "ERROR", cause: error.message });
+    console.log(error)
   }
 };
