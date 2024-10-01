@@ -42,8 +42,10 @@ const Login = () => {
         throw error;
       }
     }
-    checkAuthStatus();
-  }, [])
+    if (auth?.isLoggedIn) {
+      checkAuthStatus();
+    }
+  }, [auth?.isLoggedIn])
 
   const handleLogin = async (formData: LoginForm) => {
     try {
@@ -57,12 +59,12 @@ const Login = () => {
       })
 
       if (!response.ok) {
-      //   const errorData = await response.json();
-      //   if (response.status === 422) {
-      //     console.error("Validation Errors:", errorData.errors);
-      //     setValidationErrors(errorData.errors); // Update state with validation errors
-      //     return; // Exit early if there are validation errors
-      //   }
+        //   const errorData = await response.json();
+        //   if (response.status === 422) {
+        //     console.error("Validation Errors:", errorData.errors);
+        //     setValidationErrors(errorData.errors); // Update state with validation errors
+        //     return; // Exit early if there are validation errors
+        //   }
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
