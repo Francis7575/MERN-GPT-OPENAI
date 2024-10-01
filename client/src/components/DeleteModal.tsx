@@ -24,7 +24,9 @@ const DeleteModal = ({ onDelete, onCancel, setIsModalOpen }: DeleteModalProps) =
   return (
     <Box component="section" onClick={handleOverlayClick}
       sx={{
-        display: "flex", justifyContent: "center", alignItems: "center", position: "fixed", inset: 0,
+        display: "flex", justifyContent: "center", alignItems: "center",
+        position: "fixed", inset: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+        zIndex: 1000, 
       }}>
       <Box onClick={handleModalClick}
         sx={{
