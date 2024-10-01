@@ -1,9 +1,9 @@
-import { KeyboardEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { KeyboardEvent, useLayoutEffect, useRef, useState } from "react";
 import { Box, Avatar, Typography, Button, IconButton } from "@mui/material";
 import red from "@mui/material/colors/red";
 import { useAuth } from "../context/authContext";
 import { IoMdSend } from "react-icons/io";
-import { useNavigate } from "react-router-dom";
+import { useLocation, } from "react-router-dom";
 import ChatItem from "../components/chat/ChatItem"
 import toast from "react-hot-toast";
 import DeleteModal from "../components/DeleteModal";
@@ -15,7 +15,7 @@ type Message = {
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 const Chat = () => {
-  const navigate = useNavigate()
+  const location = useLocation();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const auth = useAuth();
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
@@ -83,7 +83,7 @@ const Chat = () => {
 
   // fetchAllChats before the UI is render
   useLayoutEffect(() => {
-    if (auth?.isLoggedIn && auth.user) {
+    if (location.pathname === "/chat" && auth?.isLoggedIn) {
       toast.loading("Loading Chats", { id: "loadchats" });
       getUserChats().then((data) => {
         setChatMessages([...data.chats]);
@@ -94,12 +94,6 @@ const Chat = () => {
       });
     }
   }, [auth]);
-
-  useEffect(() => {
-    if (!auth?.user) {
-      return navigate("/login");
-    }
-  }, [auth?.user]);
 
   const handleDeleteChats = async () => {
     try {
