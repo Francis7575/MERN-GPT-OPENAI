@@ -18,7 +18,7 @@ const Login = () => {
     email: '',
     password: ''
   })
-  const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
+  // const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
 
   useEffect(() => {
     const checkAuthStatus = async () => {

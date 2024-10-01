@@ -10,12 +10,37 @@ type Message = {
   role: "user" | "assistant";
   content: string;
 };
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 const Chat = () => {
   const navigate = useNavigate()
   const inputRef = useRef<HTMLInputElement | null>(null);
   const auth = useAuth();
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
+
+  const handleChats = async (message: string) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/chats/new`, {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Cookies included in the request
+        body: JSON.stringify({ message }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Unable to send chat");
+      }
+
+      const data = await response.json();
+      return data; 
+
+    } catch (error) {
+      console.error("Error sending chat:", error);
+      throw error;
+    }
+  }
 
   const handleSubmit = async () => {
     const content = inputRef.current?.value as string;
@@ -24,6 +49,8 @@ const Chat = () => {
     }
     const newMessage: Message = { role: "user", content };
     setChatMessages((prev) => [...prev, newMessage]);
+    const chatData = await handleChats(content)
+    setChatMessages([...chatData.chats])
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -37,7 +64,7 @@ const Chat = () => {
     if (!auth?.user) {
       return navigate("/login");
     }
-  }, [auth]);
+  }, [auth?.user]);
 
   return (
     <Box
@@ -127,7 +154,7 @@ const Chat = () => {
         <Box
           sx={{
             width: "100%",
-            height: "60vh",
+            height: "50vh",
             borderRadius: 3,
             mx: "auto",
             display: "flex",
@@ -139,7 +166,6 @@ const Chat = () => {
           }}
         >
           {chatMessages.map((chat, index) => (
-            //@ts-ignore
             <ChatItem content={chat.content} role={chat.role} key={index} />
           ))}
         </Box>
@@ -152,7 +178,6 @@ const Chat = () => {
             margin: "auto",
           }}
         >
-          {" "}
           <input
             ref={inputRef}
             type="text"

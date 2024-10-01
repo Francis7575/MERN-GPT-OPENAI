@@ -23,7 +23,9 @@ export const generateChatCompletion = async (
         content,
       })
     );
+    // Add the user's current message to the temporary chats array for the API request
     chats.push({ content: message, role: "user" });
+    // Persist the user's current message to their chat history in the database
     user.chats.push({ content: message, role: "user" });
 
     const config = configureOpenAI();
@@ -32,7 +34,6 @@ export const generateChatCompletion = async (
       model: "gpt-4o",
       messages: chats,
     });
-    console.log(chatResponse);
 
     user.chats.push(chatResponse.choices[0].message);
     await user.save();
@@ -42,3 +43,4 @@ export const generateChatCompletion = async (
     res.status(500).json({ message: "Something went wrong" });
   }
 };
+
