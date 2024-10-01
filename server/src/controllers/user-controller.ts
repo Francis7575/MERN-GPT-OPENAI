@@ -104,7 +104,7 @@ export const userLogin = async (
 
     res.status(200).json({
       message: "Succesfully Login!",
-      name: user.name,
+      name: user.fullName,
       email: user.email,
     });
   } catch (error: unknown) {
@@ -129,7 +129,7 @@ export const verifyUser = async (
     }
     res
       .status(200)
-      .json({ message: "OK", name: user!.name, email: user!.email });
+      .json({ message: "OK", name: user!.fullName, email: user!.email });
   } catch (error) {
     console.log(error);
     res.status(200).json({ message: "Error verifying user" });
@@ -160,7 +160,7 @@ export const userLogout = async (
       path: "/",
     });
 
-    res.status(200).json({ message: "OK", name: user.name, email: user.email });
+    res.status(200).json({ message: "OK", name: user.fullName, email: user.email });
   } catch (error: any) {
     res.status(200).json({ message: "ERROR", cause: error.message });
     console.log(error)

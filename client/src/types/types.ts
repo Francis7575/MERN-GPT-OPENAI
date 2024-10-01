@@ -9,7 +9,7 @@ export type ValidationError = {
 }
 
 export type SignupForm = {
-  name: string
+  fullName: string
   email: string
   password: string
 }

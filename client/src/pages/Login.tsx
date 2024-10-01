@@ -2,8 +2,7 @@ import { IoIosLogIn } from "react-icons/io";
 import { Box, Typography, Button } from "@mui/material";
 import CustomizedInput from "../components/shared/CustomizedInput";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import Airobot from "/airobot.png"
-import { LoginForm, ValidationError } from "../types/types";
+import { LoginForm } from "../types/types";
 import { toast } from "react-hot-toast";
 import { useAuth } from "../context/authContext"
 import { useNavigate } from "react-router-dom";
@@ -33,7 +32,7 @@ const Login = () => {
 
         const data = await response.json()
         if (data) {
-          auth?.setUser({ email: data.email, name: data.name });
+          auth?.setUser({ email: data.email, fullName: data.fullName });
           auth?.setIsLoggedIn(true);
           toast.success("Already logged in!");
         }
@@ -94,7 +93,7 @@ const Login = () => {
     try {
       const data = await handleLogin(formData);
       if (data) {
-        auth?.setUser({ email: data.email, name: data.name });
+        auth?.setUser({ email: data.email, fullName: data.name });
         auth?.setIsLoggedIn(true);
         toast.success("Signed In Successfully", { id: "login" })
         setFormData({ email: '', password: '' });
@@ -126,7 +125,7 @@ const Login = () => {
   return (
     <Box width={"100%"} height={"100%"} sx={{ display: "flex", itemsCenter: "center", maxWidth: "1200px", margin: "auto", marginTop: "110px", }}>
       <Box display={{ md: "flex", sm: "none", xs: "none" }} flex={1} ml={{ xs: "0", md: "40px", lg: "0" }}>
-        <img src={Airobot} alt="Rowbot" style={{ maxWidth: "500px" }} />
+        <img src="airobot.png" alt="Rowbot" style={{ maxWidth: "500px" }} />
       </Box>
       <Box
         flex={"1"}

@@ -81,8 +81,8 @@ const ChatItem = ({
       }}
     >
       <Avatar sx={{ ml: "0", bgcolor: "black", color: "white" }}>
-        {auth?.user?.name[0]}
-        {auth?.user?.name.split(" ")[1][0]}
+        {auth?.user?.fullName[0]}
+        {auth?.user?.fullName.split(" ")[1][0]}
       </Avatar>
       <Box>
         {!messageBlocks && (

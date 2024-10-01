@@ -153,18 +153,22 @@ const Chat = () => {
             py: 4
           }}
         >
-          <Avatar
-            sx={{
-              mx: "auto",
-              my: 2,
-              bgcolor: "white",
-              color: "black",
-              fontWeight: 700,
-            }}
-          >
-            {auth?.user?.name[0].toUpperCase()}
-            {auth?.user?.name.split(" ")[1][0].toUpperCase()}
-          </Avatar>
+          {auth?.user?.fullName ? (
+            <Avatar
+              sx={{
+                mx: "auto",
+                my: 2,
+                bgcolor: "white",
+                color: "black",
+                fontWeight: 700,
+              }}
+            >
+              {auth?.user?.fullName[0].toUpperCase()}
+              {auth?.user?.fullName.split(" ")[1][0].toUpperCase()}
+            </Avatar>
+          ) : (
+            <Avatar>U</Avatar>
+          )}
           <Typography sx={{ mx: "auto", fontFamily: "work sans" }}>
             You are talking to a ChatBOT
           </Typography>
