@@ -1,5 +1,30 @@
 import { Avatar, Box, Typography } from '@mui/material';
 import { useAuth } from '../../context/authContext'
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { coldarkDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+function extractCodeFromString(message: string) {
+  if (message.includes("```")) {
+    const blocks = message.split("```"); // split a string (message) into an array of substrings
+    return blocks;
+  }
+}
+
+function isCodeBlock(str: string) {
+  if (
+    str.includes("=") ||
+    str.includes(";") ||
+    str.includes("[") ||
+    str.includes("]") ||
+    str.includes("{") ||
+    str.includes("}") ||
+    str.includes("#") ||
+    str.includes("//")
+  ) {
+    return true;
+  }
+  return false;
+}
 
 const ChatItem = ({
   content,
@@ -8,6 +33,7 @@ const ChatItem = ({
   content: string;
   role: "user" | "assistant";
 }) => {
+  const messageBlocks = extractCodeFromString(content);
   const auth = useAuth()
   return role == "assistant" ? (
     <Box
@@ -23,8 +49,24 @@ const ChatItem = ({
       <Avatar sx={{ ml: "0" }}>
         <img src="openai.png" alt="openai" width={"30px"} />
       </Avatar>
-      <Box>
-        <Typography fontSize={20}>{content}</Typography>
+      <Box sx={{maxWidth: "840px"}}>
+        {!messageBlocks && (
+          <Typography sx={{ fontSize: "20px" }}>{content}</Typography>
+        )}
+        {messageBlocks &&
+          messageBlocks.length &&
+          messageBlocks.map((block, idx) =>
+            isCodeBlock(block) ? (
+              <SyntaxHighlighter key={`${block}-${idx}`} style={coldarkDark} language="javascript">
+                {block}
+              </SyntaxHighlighter>
+            ) : (
+              <Typography key={`${block}-${idx}`}
+                sx={{ fontSize: "20px" }}>
+                {block}
+              </Typography>
+            )
+          )}
       </Box>
     </Box>
   ) : (
@@ -35,6 +77,7 @@ const ChatItem = ({
         bgcolor: "#004d56",
         gap: 2,
         borderRadius: 2,
+        maxWidth: "100%"
       }}
     >
       <Avatar sx={{ ml: "0", bgcolor: "black", color: "white" }}>
@@ -42,7 +85,20 @@ const ChatItem = ({
         {auth?.user?.name.split(" ")[1][0]}
       </Avatar>
       <Box>
-        <Typography fontSize={20}>{content}</Typography>
+        {!messageBlocks && (
+          <Typography sx={{ fontSize: "20px" }}>{content}</Typography>
+        )}
+        {messageBlocks &&
+          messageBlocks.length &&
+          messageBlocks.map((block, idx) =>
+            isCodeBlock(block) ? (
+              <SyntaxHighlighter key={`${block}-${idx}`} style={coldarkDark} language="javascript">
+                {block}
+              </SyntaxHighlighter>
+            ) : (
+              <Typography key={`${block}-${idx}`} sx={{ fontSize: "20px" }}>{block}</Typography>
+            )
+          )}
       </Box>
     </Box>
   )

@@ -1,10 +1,12 @@
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Box, Avatar, Typography, Button, IconButton } from "@mui/material";
 import red from "@mui/material/colors/red";
 import { useAuth } from "../context/authContext";
 import { IoMdSend } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import ChatItem from "../components/chat/ChatItem"
+import toast from "react-hot-toast";
+import DeleteModal from "../components/DeleteModal";
 
 type Message = {
   role: "user" | "assistant";
@@ -17,11 +19,12 @@ const Chat = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const auth = useAuth();
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
-  const handleChats = async (message: string) => {
+  const handleGenerateChats = async (message: string) => {
     try {
       const response = await fetch(`${BACKEND_URL}/chats/new`, {
-        method: "POST", 
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -34,7 +37,7 @@ const Chat = () => {
       }
 
       const data = await response.json();
-      return data; 
+      return data;
 
     } catch (error) {
       console.error("Error sending chat:", error);
@@ -49,7 +52,7 @@ const Chat = () => {
     }
     const newMessage: Message = { role: "user", content };
     setChatMessages((prev) => [...prev, newMessage]);
-    const chatData = await handleChats(content)
+    const chatData = await handleGenerateChats(content)
     setChatMessages([...chatData.chats])
   };
 
@@ -60,11 +63,72 @@ const Chat = () => {
     }
   };
 
+  const getUserChats = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/chats/all-chats`, {
+        method: "GET",
+        credentials: "include"
+      })
+      if (!response.ok) {
+        throw new Error("Couldn't get all chats");
+      }
+
+      const data = await response.json()
+      return data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  // fetchAllChats before the UI is render
+  useLayoutEffect(() => {
+    if (auth?.isLoggedIn && auth.user) {
+      toast.loading("Loading Chats", { id: "loadchats" });
+      getUserChats().then((data) => {
+        setChatMessages([...data.chats]);
+        toast.success("Successfully loaded chats", { id: "loadchats" });
+      }).catch((err) => {
+        console.log(err);
+        toast.error("Loading Failed", { id: "loadchats" });
+      });
+    }
+  }, [auth]);
+
   useEffect(() => {
     if (!auth?.user) {
       return navigate("/login");
     }
   }, [auth?.user]);
+
+  const handleDeleteChats = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/chats/delete`, {
+        method: "DELETE",
+        credentials: "include"
+      })
+      toast.loading("Deleting Chats", { id: "deletechats" });
+      if (!response.ok) {
+        throw new Error("Failed to delete chats");
+      }
+
+      const data = await response.json();
+      console.log(data)
+      setChatMessages([])
+      toast.success("Deleted Chats Successfully", { id: "deletechats" });
+    } catch (error) {
+      console.error(error);
+      toast.error("Deleting chats failed", { id: "deletechats" });
+    }
+  }
+
+  const handleOpenModal = () => {
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+  }
 
   return (
     <Box
@@ -127,6 +191,7 @@ const Chat = () => {
                 bgcolor: red.A400,
               },
             }}
+            onClick={handleOpenModal}
           >
             Clear Conversation
           </Button>
@@ -197,6 +262,13 @@ const Chat = () => {
           </IconButton>
         </div>
       </Box>
+      {isModalOpen && (
+        <DeleteModal
+          onDelete={handleDeleteChats}
+          onCancel={handleCloseModal}
+          setIsModalOpen={setIsModalOpen}
+        />
+      )}
     </Box>
   );
 };

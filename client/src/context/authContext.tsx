@@ -1,4 +1,5 @@
 import { ReactNode, createContext, useContext, useState } from "react";
+import toast from "react-hot-toast";
 
 type User = {
   name: string;
@@ -28,10 +29,11 @@ const logout = async () => {
     })
     const data = await response.json()
     setIsLoggedIn(false)
+    toast.success("Succesfully Logged out", { id: "userLogout" });
     return data;
   } catch (error) {
     console.error("Error logging out:", error);
-    throw error;
+    toast.error("Unable to logout", { id: "userLogout" });
   }
 }
 
