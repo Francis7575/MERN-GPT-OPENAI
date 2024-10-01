@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 type NavLinkProps = {
-  to: string;
+  to?: string;
   bg: string;
   text: string;
   textColor: string;
@@ -13,7 +13,7 @@ const NavigationLink = ({to, bg, text, textColor, onClick}: NavLinkProps) => {
     <Link
       onClick={onClick}
       className="nav-link"
-      to={to}
+      to={to!}
       style={{ background: bg, color: textColor }}
     >
       {text}

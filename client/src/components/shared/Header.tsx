@@ -4,10 +4,31 @@ import Logo from "./Logo"
 import { useAuth } from "../../context/authContext";
 import NavigationLink from "./NavigationLink";
 import Box from '@mui/material/Box';
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const auth = useAuth();
+  const navigate = useNavigate()
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/logout`, {
+        method: "GET",
+        headers: {'Content-Type': "application/json"},
+        credentials: "include"
+      })
+      const data = await response.json();
+      console.log(data)
+      auth?.setIsLoggedIn(false)
+      toast.success("Succesfully Logged out", { id: "userLogout" });
+      navigate("/login")      
+    } catch (error) {
+      console.error("Error logging out:", error);
+      toast.error("Unable to logout", { id: "userLogout" });
+    }
+  }
+  
   return (
     <AppBar
       sx={{
@@ -28,10 +49,9 @@ const Header = () => {
               />
               <NavigationLink
                 text="logout"
-                to="/login"
                 bg="#51538f"
                 textColor="white"
-                onClick={auth.logout}
+                onClick={handleLogout}
               />
             </>
           ) : (
