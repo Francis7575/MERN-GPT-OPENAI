@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useContext, useState } from "react";
 
 type User = {
   name: string;
@@ -19,12 +19,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  useEffect(() => {
-    // fetch if the user's cookies are valid then skip login
-
-  }, []);
-
-const logout = async () => { }
+const logout = async () => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/logout`, {
+      method: "GET",
+      headers: {'Content-Type': "application/json"},
+      credentials: "include"
+    })
+    const data = await response.json()
+    setIsLoggedIn(false)
+    return data;
+  } catch (error) {
+    console.error("Error logging out:", error);
+    throw error;
+  }
+}
 
 const value = {
   user,
