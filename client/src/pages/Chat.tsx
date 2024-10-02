@@ -1,9 +1,9 @@
-import { KeyboardEvent, useLayoutEffect, useRef, useState } from "react";
+import { KeyboardEvent, useLayoutEffect, useRef, useState, useEffect } from "react";
 import { Box, Avatar, Typography, Button, IconButton } from "@mui/material";
 import red from "@mui/material/colors/red";
 import { useAuth } from "../context/authContext";
 import { IoMdSend } from "react-icons/io";
-import { useLocation, } from "react-router-dom";
+import { useLocation, useNavigate} from "react-router-dom";
 import ChatItem from "../components/chat/ChatItem"
 import toast from "react-hot-toast";
 import DeleteModal from "../components/DeleteModal";
@@ -15,11 +15,35 @@ type Message = {
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 const Chat = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const auth = useAuth();
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+  useEffect(() => {
+    const checkAuthStatus = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/users/auth-status`, {
+          method: "GET",
+          credentials: 'include'
+        });
+
+        const data = await response.json()
+        if (data) {
+          auth?.setUser({ email: data.email, fullName: data.fullName });
+          auth?.setIsLoggedIn(true);
+          toast.success("Already logged in!");
+        }
+      } catch (error) {
+        console.error("CheckAuthStatus error:", error);
+        throw error;
+      }
+    }
+    checkAuthStatus();
+  }, [])
+
 
   const handleGenerateChats = async (message: string) => {
     try {
@@ -95,6 +119,12 @@ const Chat = () => {
     }
   }, [auth]);
 
+  useEffect(() => {
+    if (auth?.isLoggedIn) {
+      navigate("/chat");
+    } 
+  }, [auth?.isLoggedIn]);
+
   const handleDeleteChats = async () => {
     try {
       const response = await fetch(`${BACKEND_URL}/chats/delete`, {
@@ -149,8 +179,7 @@ const Chat = () => {
             bgcolor: "rgb(17,29,39)",
             borderRadius: 5,
             flexDirection: "column",
-            mx: 3,
-            py: 4
+            py: 4,
           }}
         >
           {auth?.user?.fullName ? (
@@ -167,7 +196,7 @@ const Chat = () => {
               {auth?.user?.fullName.split(" ")[1][0].toUpperCase()}
             </Avatar>
           ) : (
-            <Avatar>U</Avatar>
+            <Avatar>F</Avatar>
           )}
           <Typography sx={{ mx: "auto", fontFamily: "work sans" }}>
             You are talking to a ChatBOT
@@ -200,7 +229,8 @@ const Chat = () => {
           display: "flex",
           flex: { md: 0.8, xs: 1, sm: 1 },
           flexDirection: "column",
-          px: 3,
+          pl: 3
+
         }}
       >
         <Typography

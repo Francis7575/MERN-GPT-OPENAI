@@ -17,35 +17,8 @@ const Login = () => {
     email: '',
     password: ''
   })
+  
   // const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
-
-  useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const response = await fetch(`${BACKEND_URL}/users/auth-status`, {
-          credentials: 'include'
-        });
-        if (response.status === 401) {
-          auth?.setIsLoggedIn(false);
-          return;
-        }
-
-        const data = await response.json()
-        if (data) {
-          auth?.setUser({ email: data.email, fullName: data.fullName });
-          auth?.setIsLoggedIn(true);
-          toast.success("Already logged in!");
-        }
-      } catch (error) {
-        console.error("CheckAuthStatus error:", error);
-        throw error;
-      }
-    }
-    if (auth?.isLoggedIn) {
-      checkAuthStatus();
-    }
-  }, [auth?.isLoggedIn])
-
   const handleLogin = async (formData: LoginForm) => {
     try {
       const response = await fetch(`${BACKEND_URL}/users/login`, {
@@ -93,7 +66,7 @@ const Login = () => {
     try {
       const data = await handleLogin(formData);
       if (data) {
-        auth?.setUser({ email: data.email, fullName: data.name });
+        auth?.setUser({ email: data.email, fullName: data.fullName });
         auth?.setIsLoggedIn(true);
         toast.success("Signed In Successfully", { id: "login" })
         setFormData({ email: '', password: '' });
