@@ -26,8 +26,8 @@ const Signup = () => {
 
     if (!fullName) {
       newErrors.fullName = 'Fullname cannot be empty';
-    } else if (fullName.length < 6) {
-      newErrors.fullName = 'Fullname must be at least 6 characters long';
+    } else if (fullName.split(' ').length < 2) {
+      newErrors.fullName = 'Please enter your first and last name';
     }
 
     if (email) {
