@@ -4,6 +4,8 @@ import { compare, hash } from "bcrypt";
 import { createToken } from "../utils/token-manager";
 import { COOKIE_NAME } from "../utils/constants";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export const getAllUsers = async (
   req: Request,
   res: Response,
@@ -48,11 +50,11 @@ export const userSignup = async (
     const expires = new Date();
     expires.setDate(expires.getDate() + 7);
     res.cookie(COOKIE_NAME, token, {
-      path: "/",
-      domain: "localhost",
-      expires,
       httpOnly: true,
+      sameSite: isProduction ? "none" : "strict",
+      secure: isProduction ? true : false,
       signed: true,
+      expires
     });
 
     res
@@ -85,20 +87,20 @@ export const userLogin = async (
     // create token and store cookie
     res.clearCookie(COOKIE_NAME, {
       httpOnly: true,
-      domain: "localhost",
+      sameSite: isProduction ? "none" : "strict",
+      secure: isProduction ? true : false,
       signed: true,
-      path: "/",
     });
 
     const token = createToken(user._id.toString(), user.email, "7d");
     const expires = new Date();
     expires.setDate(expires.getDate() + 7);
     res.cookie(COOKIE_NAME, token, {
-      path: "/",
-      domain: "localhost",
-      expires,
       httpOnly: true,
+      sameSite: isProduction ? "none" : "strict",
+      secure: isProduction ? true : false,
       signed: true,
+      expires
     });
 
     res.status(200).json({
@@ -154,14 +156,16 @@ export const userLogout = async (
 
     res.clearCookie(COOKIE_NAME, {
       httpOnly: true,
-      domain: "localhost",
-      signed: true,
-      path: "/",
+      sameSite: isProduction ? "none" : "strict",
+      secure: isProduction ? true : false,
+      signed: true
     });
 
-    res.status(200).json({ message: "OK", fullName: user.fullName, email: user.email });
+    res
+      .status(200)
+      .json({ message: "OK", fullName: user.fullName, email: user.email });
   } catch (error: any) {
     res.status(200).json({ message: "ERROR", cause: error.message });
-    console.log(error)
+    console.log(error);
   }
 };
