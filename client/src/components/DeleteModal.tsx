@@ -26,7 +26,7 @@ const DeleteModal = ({ onDelete, onCancel, setIsModalOpen }: DeleteModalProps) =
       sx={{
         display: "flex", justifyContent: "center", alignItems: "center",
         position: "fixed", inset: 0, backgroundColor: 'rgba(0, 0, 0, 0.5)', 
-        zIndex: 1000, 
+        zIndex: 1000, px: 2.5 
       }}>
       <Box onClick={handleModalClick}
         sx={{
