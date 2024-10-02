@@ -41,9 +41,9 @@ export const userSignup = async (
     // create token and store cookie
     res.clearCookie(COOKIE_NAME, {
       httpOnly: true,
-      domain: "localhost",
+      sameSite: isProduction ? "none" : "strict",
+      secure: isProduction ? true : false,
       signed: true,
-      path: "/",
     });
 
     const token = createToken(user._id.toString(), user.email, "7d");
