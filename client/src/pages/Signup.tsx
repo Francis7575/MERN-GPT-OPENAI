@@ -19,6 +19,7 @@ const Signup = () => {
     password: ''
   })
 
+
   const handleSignup = async (formData: SignupForm) => {
     try {
       const response = await fetch(`${BACKEND_URL}/users/signup`, {
@@ -62,7 +63,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (auth?.isLoggedIn) {
-      navigate("/login")
+      navigate("/chat")
     }
   }, [auth?.isLoggedIn])
 
