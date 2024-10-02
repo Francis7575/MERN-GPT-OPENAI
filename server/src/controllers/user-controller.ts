@@ -3,7 +3,6 @@ import User from "../models/User";
 import { compare, hash } from "bcrypt";
 import { createToken } from "../utils/token-manager";
 import { COOKIE_NAME } from "../utils/constants";
-import { AnyARecord } from "dns";
 
 export const getAllUsers = async (
   req: Request,
@@ -27,14 +26,14 @@ export const userSignup = async (
 ): Promise<void> => {
   try {
     //user signup
-    const { name, email, password } = req.body;
+    const { fullName, email, password } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       res.status(401).send("User already registered");
       return;
     }
     const hashedPassword = await hash(password, 10);
-    const user = new User({ name, email, password: hashedPassword });
+    const user = new User({ fullName, email, password: hashedPassword });
     await user.save();
 
     // create token and store cookie
@@ -104,7 +103,7 @@ export const userLogin = async (
 
     res.status(200).json({
       message: "Succesfully Login!",
-      name: user.fullName,
+      fullName: user.fullName,
       email: user.email,
     });
   } catch (error: unknown) {
@@ -129,7 +128,7 @@ export const verifyUser = async (
     }
     res
       .status(200)
-      .json({ message: "OK", name: user!.fullName, email: user!.email });
+      .json({ message: "OK", fullName: user!.fullName, email: user!.email });
   } catch (error) {
     console.log(error);
     res.status(200).json({ message: "Error verifying user" });
@@ -160,7 +159,7 @@ export const userLogout = async (
       path: "/",
     });
 
-    res.status(200).json({ message: "OK", name: user.fullName, email: user.email });
+    res.status(200).json({ message: "OK", fullName: user.fullName, email: user.email });
   } catch (error: any) {
     res.status(200).json({ message: "ERROR", cause: error.message });
     console.log(error)
