@@ -15,32 +15,32 @@ const Header = () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/logout`, {
         method: "GET",
-        headers: {'Content-Type': "application/json"},
+        headers: { 'Content-Type': "application/json" },
         credentials: "include"
       })
       const data = await response.json();
       console.log(data)
       auth?.setIsLoggedIn(false)
       toast.success("Succesfully Logged out", { id: "userLogout" });
-      navigate("/login")      
+      navigate("/login")
     } catch (error) {
       console.error("Error logging out:", error);
       toast.error("Unable to logout", { id: "userLogout" });
     }
   }
-  
+
   return (
     <AppBar
       sx={{
         bgcolor: "transparent", position: "static", boxShadow: "none", maxWidth: "1200px",
-        margin: "0 auto", padding: { xs: "10px", md: "16px", lg: "0" }, mt: { xs: 2, lg: 4 },
+        margin: "0 auto", mt: { xs: 2, lg: 4 }
       }}
     >
       <Toolbar sx={{ display: "flex", itemsCenter: "center", marginTop: "6" }}>
         <Logo />
         <Box>
           {auth?.isLoggedIn ? (
-            <>
+            <Box sx={{ display: "flex", alignItems: "center", fontSize: { md: "1rem", xs: ".85rem" } }}>
               <NavigationLink
                 text="Go To Chat"
                 to="/chat"
@@ -53,9 +53,9 @@ const Header = () => {
                 textColor="white"
                 onClick={handleLogout}
               />
-            </>
+            </Box>
           ) : (
-            <>
+            <Box sx={{ display: "flex", alignItems: "center", fontSize: { md: "1rem", xs: ".85rem" } }}>
               <NavigationLink
                 text="Login"
                 to="/login"
@@ -68,7 +68,7 @@ const Header = () => {
                 bg="#51538f"
                 textColor="white"
               />
-            </>
+            </Box>
           )}
         </Box>
       </Toolbar>

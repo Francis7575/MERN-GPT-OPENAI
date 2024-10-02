@@ -49,9 +49,9 @@ const ChatItem = ({
       <Avatar sx={{ ml: "0" }}>
         <img src="openai.png" alt="openai" width={"30px"} />
       </Avatar>
-      <Box sx={{maxWidth: "840px"}}>
+      <Box sx={{ maxWidth: "840px" }}>
         {!messageBlocks && (
-          <Typography sx={{ fontSize: "20px" }}>{content}</Typography>
+          <Typography sx={{ fontSize: { md: "1.25rem", sm: "1rem" } }}>{content}</Typography>
         )}
         {messageBlocks &&
           messageBlocks.length &&
@@ -77,7 +77,8 @@ const ChatItem = ({
         bgcolor: "#004d56",
         gap: 2,
         borderRadius: 2,
-        maxWidth: "100%"
+        maxWidth: "100%",
+        alignItems: "center"
       }}
     >
       <Avatar sx={{ ml: "0", bgcolor: "black", color: "white" }}>
@@ -86,7 +87,7 @@ const ChatItem = ({
       </Avatar>
       <Box>
         {!messageBlocks && (
-          <Typography sx={{ fontSize: "20px" }}>{content}</Typography>
+          <Typography sx={{ fontSize: { md: "1.25rem", sm: "1rem" } }}>{content}</Typography>
         )}
         {messageBlocks &&
           messageBlocks.length &&

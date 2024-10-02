@@ -3,7 +3,8 @@ import { Box, Avatar, Typography, Button, IconButton } from "@mui/material";
 import red from "@mui/material/colors/red";
 import { useAuth } from "../context/authContext";
 import { IoMdSend } from "react-icons/io";
-import { useLocation, useNavigate} from "react-router-dom";
+import { CiMenuKebab } from "react-icons/ci";
+import { useLocation, useNavigate } from "react-router-dom";
 import ChatItem from "../components/chat/ChatItem"
 import toast from "react-hot-toast";
 import DeleteModal from "../components/DeleteModal";
@@ -122,7 +123,7 @@ const Chat = () => {
   useEffect(() => {
     if (auth?.isLoggedIn) {
       navigate("/chat");
-    } 
+    }
   }, [auth?.isLoggedIn]);
 
   const handleDeleteChats = async () => {
@@ -163,13 +164,13 @@ const Chat = () => {
         height: "100%",
         mt: 3,
         gap: 3,
+        pl: { md: "24px", lg: "0", xs: "0", sm: "0" }
       }}
     >
       <Box
         sx={{
           display: { md: "flex", xs: "none", sm: "none" },
           flex: 0.3,
-          flexDirection: "column",
         }}
       >
         <Box
@@ -186,7 +187,7 @@ const Chat = () => {
             <Avatar
               sx={{
                 mx: "auto",
-                my: 2,
+                mt: 2,
                 bgcolor: "white",
                 color: "black",
                 fontWeight: 700,
@@ -198,13 +199,14 @@ const Chat = () => {
           ) : (
             <Avatar>F</Avatar>
           )}
-          <Typography sx={{ mx: "auto", fontFamily: "work sans" }}>
-            You are talking to a ChatBOT
-          </Typography>
-          <Typography sx={{ mx: "auto", fontFamily: "work sans", my: 4, p: 3 }}>
-            You can ask some questions related to Knowledge, Business, Advices,
-            Education, etc. But avoid sharing personal information
-          </Typography>
+          <Box sx={{ px: 4, mt: 4 }}>
+            <Typography sx={{ textAlign: 'center', fontFamily: "work sans" }}>
+              You are talking to a ChatBOT
+            </Typography>
+            <Typography sx={{ textAlign: 'center', fontFamily: 'work sans', mt: 4 }}>
+              You can ask some questions related to Knowledge, Business, Advices, Education, etc. But avoid sharing personal information
+            </Typography>
+          </Box>
           <Button
             sx={{
               width: "200px",
@@ -227,23 +229,52 @@ const Chat = () => {
       <Box
         sx={{
           display: "flex",
-          flex: { md: 0.8, xs: 1, sm: 1 },
+          flex: { md: 0.68, xs: 1, sm: 1 },
           flexDirection: "column",
-          pl: 3
-
+          pr: { lg: 0, md: 3, xs: 3 },
+          pl: { md: 0, sm: 3, xs: 3 },
+          mt: { md: 0, sm: 4, xs: 4 }
         }}
       >
-        <Typography
+        <Box
           sx={{
-            fontSize: "40px",
-            color: "white",
-            mb: 2,
-            mx: "auto",
-            fontWeight: "600",
+            display: "flex",
+            alignItems: "center", // Vertically center items
+            justifyContent: "space-between", // Space items evenly
+            width: "100%", // Full width to help with centering
           }}
         >
-          Model - GPT-4o
-        </Typography>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: { md: "2.5rem", sm: "1.5rem", xs: "1.5rem" },
+                color: "white",
+                mb: 2,
+                fontWeight: "600",
+              }}
+            >
+              Model - GPT-4o
+            </Typography>
+          </Box>
+          <Button onClick={handleOpenModal}
+            sx={{
+              display: { md: "none", sm: "block", xs: "block" },
+              padding: 0,
+              minWidth: 0,        // Remove default minimum width
+              minHeight: 0,       // Remove default minimum height
+              width: '30px',
+              height: '30px',
+            }}
+          >
+            <CiMenuKebab size="30px" />
+          </Button>
+        </Box>
         <Box
           sx={{
             width: "100%",
