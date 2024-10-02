@@ -3,7 +3,7 @@
     "module": "NodeNext",              
     "moduleResolution": "NodeNext",        
     "target": "ES2022",               
-    "outDir": "./dist",                
+    "outDir": "./dist",  
     "rootDir": "./src",                
     "allowSyntheticDefaultImports": true,
     "strict": true                     
