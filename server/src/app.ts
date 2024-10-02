@@ -8,8 +8,17 @@ config()
 
 const app = express();
 
+const FRONTEND_URL = process.env.FRONTEND_URL;
+
+// CORS options
+const corsOptions = {
+  origin: FRONTEND_URL, // Allow requests from this origin
+  credentials: true, // Enable cookies to be sent and received
+  optionsSuccessStatus: 200, // For older browsers
+};
+
 // middlewares
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors(corsOptions));
 app.use(express.json())
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
