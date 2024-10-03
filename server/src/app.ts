@@ -1,4 +1,4 @@
-import express from "express"
+import express, { Request, Response, NextFunction } from "express"
 import {config} from "dotenv"
 import morgan from "morgan"
 import cookieParser from "cookie-parser";
@@ -19,6 +19,13 @@ const corsOptions = {
 
 // middlewares
 app.use(cors(corsOptions));
+
+app.use((req: Request , res: Response, next: NextFunction) => {
+  res.setHeader("Access-Control-Allow-Origin", FRONTEND_URL!);
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Combine headers
+  next();
+});
+
 app.use(express.json())
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
