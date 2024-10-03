@@ -200,11 +200,11 @@ const Chat = () => {
             <Avatar>F</Avatar>
           )}
           <Box sx={{ px: 4, mt: 4 }}>
-            <Typography sx={{ textAlign: 'center', fontFamily: "work sans" }}>
+            <Typography sx={{ textAlign: 'center', fontFamily: "work sans", fontSize: { md: "1.2rem" } }}>
               You are talking to a ChatBOT
             </Typography>
-            <Typography sx={{ textAlign: 'center', fontFamily: 'work sans', mt: 4 }}>
-              You can ask some questions related to Knowledge, Business, Advices, Education, etc. But avoid sharing personal information
+            <Typography sx={{ textAlign: 'center', fontFamily: 'work sans', mt: 4, fontSize: { md: "1.2rem" } }}>
+              You can ask some questions related to Knowledge, Business, Advices, Education and more.
             </Typography>
           </Box>
           <Button
@@ -229,11 +229,11 @@ const Chat = () => {
       <Box
         sx={{
           display: "flex",
-          flex: { md: 0.68, xs: 1, sm: 1 },
+          flex: { lg: 0.7, md: 0.68, xs: 1, sm: 1 },
           flexDirection: "column",
           pr: { lg: 0, md: 3, xs: 3 },
           pl: { md: 0, sm: 3, xs: 3 },
-          mt: { md: 0, sm: 4, xs: 4 }
+          mt: { md: 0, sm: 4, xs: 4 },
         }}
       >
         <Box

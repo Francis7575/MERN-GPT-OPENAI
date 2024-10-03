@@ -49,20 +49,25 @@ const ChatItem = ({
       <Avatar sx={{ ml: "0" }}>
         <img src="openai.png" alt="openai" width={"30px"} />
       </Avatar>
-      <Box sx={{ maxWidth: "840px" }}>
+      <Box>
         {!messageBlocks && (
-          <Typography sx={{ fontSize: { md: "1.25rem", sm: "1rem" } }}>{content}</Typography>
+          <Typography sx={{ fontSize: { md: "1.2rem", sm: "1rem", xs: "1rem" }, maxWidth: "400px" }}>
+            {content}
+          </Typography>
         )}
         {messageBlocks &&
           messageBlocks.length &&
           messageBlocks.map((block, idx) =>
             isCodeBlock(block) ? (
-              <SyntaxHighlighter key={`${block}-${idx}`} style={coldarkDark} language="javascript">
+              <SyntaxHighlighter key={`${block}-${idx}`}
+                style={coldarkDark}
+                language="javascript"
+                wrapLongLines={true}>
                 {block}
               </SyntaxHighlighter>
             ) : (
               <Typography key={`${block}-${idx}`}
-                sx={{ fontSize: "20px" }}>
+                sx={{ fontSize: { md: "1.2rem", sm: "1rem", xs: "1rem" }, maxWidth: "700px" }}>
                 {block}
               </Typography>
             )
@@ -77,7 +82,6 @@ const ChatItem = ({
         bgcolor: "#004d56",
         gap: 2,
         borderRadius: 2,
-        maxWidth: "100%",
         alignItems: "center"
       }}
     >
@@ -87,17 +91,23 @@ const ChatItem = ({
       </Avatar>
       <Box>
         {!messageBlocks && (
-          <Typography sx={{ fontSize: { md: "1.25rem", sm: "1rem" } }}>{content}</Typography>
+          <Typography sx={{ fontSize: { md: "1.2rem", sm: "1rem", xs: "1rem" } }}>{content}</Typography>
         )}
         {messageBlocks &&
           messageBlocks.length &&
           messageBlocks.map((block, idx) =>
             isCodeBlock(block) ? (
-              <SyntaxHighlighter key={`${block}-${idx}`} style={coldarkDark} language="javascript">
+              <SyntaxHighlighter key={`${block}-${idx}`}
+                style={coldarkDark}
+                language="javascript"
+                wrapLongLines={true}>
                 {block}
               </SyntaxHighlighter>
             ) : (
-              <Typography key={`${block}-${idx}`} sx={{ fontSize: "20px" }}>{block}</Typography>
+              <Typography key={`${block}-${idx}`}
+                sx={{ fontSize: { md: "1.5rem", sm: "1rem", xs: "1rem" } }}>
+                {block}
+              </Typography>
             )
           )}
       </Box>
