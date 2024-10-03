@@ -200,10 +200,10 @@ const Chat = () => {
             <Avatar>F</Avatar>
           )}
           <Box sx={{ px: 4, mt: 4 }}>
-            <Typography sx={{ textAlign: 'center', fontFamily: "work sans", fontSize: { md: "1.2rem" } }}>
+            <Typography sx={{ textAlign: 'center', fontFamily: "work sans", }}>
               You are talking to a ChatBOT
             </Typography>
-            <Typography sx={{ textAlign: 'center', fontFamily: 'work sans', mt: 4, fontSize: { md: "1.2rem" } }}>
+            <Typography sx={{ textAlign: 'center', fontFamily: 'work sans', mt: 4, }}>
               You can ask some questions related to Knowledge, Business, Advices, Education and more.
             </Typography>
           </Box>
@@ -312,7 +312,7 @@ const Chat = () => {
               border: "none",
               outline: "none",
               color: "white",
-              fontSize: "20px",
+              fontSize: "1.25rem",
             }}
             onKeyDown={handleKeyDown}
           />
