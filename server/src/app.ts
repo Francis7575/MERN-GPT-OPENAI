@@ -38,8 +38,8 @@ app.use(morgan("dev"));
 
 app.use("/api/v1", appRouter)
 
-app.get("*", (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, "../client/build", "index.html"));
-});
+
+const filePath = path.join(__dirname, 'client', 'build', 'index.html');
+console.log(filePath)
 
 export default app
