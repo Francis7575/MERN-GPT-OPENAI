@@ -36,8 +36,6 @@ app.use(morgan("dev"));
 
 app.use("/api/v1", appRouter)
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express on Vercel");
-});
+
 
 export default app
