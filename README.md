@@ -12,7 +12,7 @@ Frontend Libraries used:
 - React-hot-toast: Shows an alert upon completing an action or an error occurs. 
 - React-icons: Library used for importing icons.
 - @Mui/material: This Library was used to create the user interface by importing pre-built components and applying styles to them.
-
+<hr></hr>
 Backend Libraries used:
 - Express: this framework facilitates the setup of server environment by enabling the use middlewares, allows to handle HTTP requests and responses, and the creation of routes.
 - Bcrypt: Is a library that enables the encryption of user passwords, enhancing security by preventing unauthorized access to sensitive information stored in the database. 
