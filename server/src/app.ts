@@ -4,7 +4,6 @@ import morgan from "morgan"
 import cookieParser from "cookie-parser";
 import appRouter from "./routes"; 
 import cors from "cors"
-import path from "path"
 
 config()
 
@@ -30,16 +29,11 @@ app.use((req: Request , res: Response, next: NextFunction) => {
 
 app.use(express.json())
 app.use(cookieParser(process.env.COOKIE_SECRET));
-// Serve static files from the React frontend
-app.use(express.static(path.join(__dirname, "../client/build")));
+
 
 //remove it in production
 app.use(morgan("dev"));
 
 app.use("/api/v1", appRouter)
-
-
-const filePath = path.join(__dirname, 'client', 'build', 'index.html');
-console.log(filePath)
 
 export default app
