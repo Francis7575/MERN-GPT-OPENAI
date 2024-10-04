@@ -3,7 +3,7 @@ This Chatbot application facilitates seamless interaction with the GPT-4 model, 
 
 Techologies used: React, Typescript, MaterialUI, Node.js, Express, MongoDB.
 
-![Alt text]("/client/image-mern-openai.png")
+![Alt text](./client/public/image-mern-openai.png)
 <hr></hr>
 These are specific use cases of each library on this project
 
