@@ -24,6 +24,7 @@ app.use(cors(corsOptions));
 app.use((req: Request , res: Response, next: NextFunction) => {
   res.setHeader("Access-Control-Allow-Origin", FRONTEND_URL!);
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Combine headers
+  res.setHeader("Access-Control-Allow-Credentials", "true"); // Allow credentials (cookies, etc.)
   next();
 });
 
