@@ -3,10 +3,12 @@ This Chatbot application facilitates seamless interaction with the GPT-4 model, 
 
 Techologies used: React, Typescript, MaterialUI, Node.js, Express, MongoDB.
 
-
+![Alt text](./client/public/image-mern-openai.png)
+<hr></hr>
 These are specific use cases of each library on this project
 
 **Frontend Libraries used:**
+- React: This is the library was used to create reusable components and render them in the user interface.
 - React-router-dom: Allows the user to navigate through different pages.
 - React-type-animation: Used to create an interactive and engaging user experience by implementing dynamic text in the homepage.
 - React-syntax-highlighter: Was integrated to display visually appealing code blocks whenever the user requests code generation.
