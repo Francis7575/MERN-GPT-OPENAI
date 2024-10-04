@@ -1,21 +1,21 @@
 {
-"version": 2,
-"builds": [
-  {
-    "src": "/server/src/server.ts",
-    "use": "@vercel/node"
-  }
-],
-"routes": [
-  {
-    "src": "/api/v1/(.*)",
-    "dest": "/server/src/server.ts" 
-  }
-],
-"rewrites": [
-  {
-    "source": "/(.*)",
-    "destination": "/client/index.html"
-  }
-]
+  "version": 2,
+  "builds": [
+    {
+      "src": "/server/src/server.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/v1/(.*)",
+      "dest": "/server/src/server.ts"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/client/index.html"
+    }
+  ]
 }
