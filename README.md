@@ -6,4 +6,4 @@ Connects directly to the GPT-4 model via the OpenAI API for enhanced conversatio
 React Syntax Highlighter for precise and visually appealing code block rendering.
 
 # Application live link
-https://mern-gpt-ai.onrender.com
+https://mern-gpt-openai-client.vercel.app/
