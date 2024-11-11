@@ -1,5 +1,5 @@
 import { KeyboardEvent, useLayoutEffect, useRef, useState, useEffect } from "react";
-import { Box, Avatar, Typography, Button, IconButton } from "@mui/material";
+import { Box, Avatar, Typography, Button, IconButton, CircularProgress } from "@mui/material";
 import red from "@mui/material/colors/red";
 import { useAuth } from "../context/authContext";
 import { IoMdSend } from "react-icons/io";
@@ -22,11 +22,12 @@ const Chat = () => {
   const auth = useAuth();
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isAssistantLoading, setisAssistantLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
-        const response = await fetch(`${BACKEND_URL}/users/auth-status`, {
+        const response = await fetch(`${BACKEND_URL}/api/v1/users/auth-status`, {
           method: "GET",
           credentials: 'include'
         });
@@ -48,7 +49,7 @@ const Chat = () => {
 
   const handleGenerateChats = async (message: string) => {
     try {
-      const response = await fetch(`${BACKEND_URL}/chats/new`, {
+      const response = await fetch(`${BACKEND_URL}/api/v1/chats/new`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -71,14 +72,22 @@ const Chat = () => {
   }
 
   const handleSubmit = async () => {
-    const content = inputRef.current?.value as string;
-    if (inputRef && inputRef.current) {
-      inputRef.current.value = "";
+    try {
+      const content = inputRef.current?.value as string;
+      if (inputRef && inputRef.current) {
+        inputRef.current.value = "";
+      }
+      setisAssistantLoading(true)
+      const newMessage: Message = { role: "user", content };
+      setChatMessages((prev) => [...prev, newMessage]);
+      const chatData = await handleGenerateChats(content)
+      setChatMessages([...chatData.chats])
+    } catch (e) {
+      console.log('error submitting-')
+    } finally {
+      setisAssistantLoading(false)
     }
-    const newMessage: Message = { role: "user", content };
-    setChatMessages((prev) => [...prev, newMessage]);
-    const chatData = await handleGenerateChats(content)
-    setChatMessages([...chatData.chats])
+
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -90,7 +99,7 @@ const Chat = () => {
 
   const getUserChats = async () => {
     try {
-      const response = await fetch(`${BACKEND_URL}/chats/all-chats`, {
+      const response = await fetch(`${BACKEND_URL}/api/v1/chats/all-chats`, {
         method: "GET",
         credentials: "include"
       })
@@ -128,7 +137,7 @@ const Chat = () => {
 
   const handleDeleteChats = async () => {
     try {
-      const response = await fetch(`${BACKEND_URL}/chats/delete`, {
+      const response = await fetch(`${BACKEND_URL}/api/v1/chats/delete`, {
         method: "DELETE",
         credentials: "include"
       })
@@ -289,9 +298,18 @@ const Chat = () => {
             scrollBehavior: "smooth",
           }}
         >
-          {chatMessages.map((chat, index) => (
-            <ChatItem content={chat.content} role={chat.role} key={index} />
-          ))}
+          {chatMessages.map((message, index) => {
+            const isNewMessage = index === chatMessages.length - 1;
+            return (
+              <ChatItem
+                content={message.content}
+                role={message.role}
+                key={index}
+                loading={isAssistantLoading}
+                isNewMessage={isNewMessage}
+              />
+            )
+          })}
         </Box>
         <div
           style={{
