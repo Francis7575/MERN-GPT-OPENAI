@@ -47,7 +47,7 @@ const Login = () => {
 
   const handleLogin = async (formData: LoginForm) => {
     try {
-      const response = await fetch(`${BACKEND_URL}/users/login`, {
+      const response = await fetch(`${BACKEND_URL}/api/v1/users/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

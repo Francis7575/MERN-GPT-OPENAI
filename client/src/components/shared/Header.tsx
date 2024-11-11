@@ -13,7 +13,7 @@ const Header = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/users/logout`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/v1/users/logout`, {
         method: "GET",
         headers: { 'Content-Type': "application/json" },
         credentials: "include"
