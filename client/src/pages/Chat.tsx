@@ -1,5 +1,5 @@
 import { KeyboardEvent, useLayoutEffect, useRef, useState, useEffect } from "react";
-import { Box, Avatar, Typography, Button, IconButton, CircularProgress } from "@mui/material";
+import { Box, Avatar, Typography, Button, IconButton } from "@mui/material";
 import red from "@mui/material/colors/red";
 import { useAuth } from "../context/authContext";
 import { IoMdSend } from "react-icons/io";
