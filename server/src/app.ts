@@ -1,11 +1,11 @@
-import express, { Request, Response, NextFunction } from "express"
-import {config} from "dotenv"
-import morgan from "morgan"
+import express, { Request, Response, NextFunction } from "express";
+import { config } from "dotenv";
+import morgan from "morgan";
 import cookieParser from "cookie-parser";
-import appRouter from "./routes"; 
-import cors from "cors"
+import appRouter from "./routes";
+import cors from "cors";
 
-config()
+config();
 
 const app = express();
 
@@ -21,22 +21,23 @@ const corsOptions = {
 // middlewares
 app.use(cors(corsOptions));
 
-app.use((req: Request , res: Response, next: NextFunction) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.setHeader("Access-Control-Allow-Origin", FRONTEND_URL!);
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization"); // Combine headers
   res.setHeader("Access-Control-Allow-Credentials", "true"); // Allow credentials (cookies, etc.)
   next();
 });
 
-app.use(express.json())
+app.use(express.json());
 app.use(cookieParser(process.env.COOKIE_SECRET));
 
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok", message: "Backend is ready" });
+});
 
-//remove it in production
 app.use(morgan("dev"));
 
-app.use("/api/v1", appRouter)
+app.use("/api/v1", appRouter);
 
-
-
-export default app
+export default app;

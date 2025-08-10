@@ -4,6 +4,7 @@ import './index.css'
 import { createTheme, ThemeProvider } from '@mui/material';
 import { AuthProvider } from "./context/authContext.tsx";
 import { Toaster } from "react-hot-toast";
+import AppLoader from './pages/IsBackendReady.tsx';
 
 const theme = createTheme({
   typography: {
@@ -16,7 +17,9 @@ createRoot(document.getElementById('root')!).render(
   <AuthProvider>
     <ThemeProvider theme={theme}>
       <Toaster position='bottom-left' />
-      <App />
+      <AppLoader>
+        <App />
+      </AppLoader>
     </ThemeProvider>
   </AuthProvider>
 )
