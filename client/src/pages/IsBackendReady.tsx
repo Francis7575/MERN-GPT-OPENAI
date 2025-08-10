@@ -76,7 +76,7 @@ const AppLoader = ({ children }: { children: React.ReactNode }) => {
       } else {
         setBackendReady(true);
       }
-      setLoading(true);
+      setLoading(false);
     };
 
     checkBackend();
