@@ -1,13 +1,19 @@
-html,
-body {
+* {
   margin: 0;
   padding: 0;
-  background: #05101c;
-  color: white;
+  box-sizing: border-box;
   font-family: "Roboto Slab", serif;
 }
 
-
+html,
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #05101c;
+  color: white;
+}
 
 .image-inverted {
   filter: invert(100%);
@@ -18,7 +24,7 @@ body {
   text-transform: uppercase;
   margin-right: 10px;
   margin-left: 10px;
-  padding: 8px 20px;  
+  padding: 8px 20px;
   border-radius: 10px;
   text-decoration: none;
   letter-spacing: 1px;
@@ -47,9 +53,8 @@ body {
   font-size: 1rem;
   color: white;
   display: inline-block;
-  text-shadow: "1px 1px 20px #000",
+  text-shadow: "1px 1px 20px #000";
 }
-  
 
 @media (min-width: 700px) {
   .login-form {
