@@ -15,7 +15,7 @@ const routes: IRouterType[] = [
     children: [
       {
         title: "Home",
-        path: "/",
+        path: "/home",
         element: <Home />,
       },
       {
@@ -30,7 +30,7 @@ const routes: IRouterType[] = [
       },
       {
         title: "Chat",
-        path: "/chat",
+        path: "/",
         element: <Chat />,
       },
     ]
