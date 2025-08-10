@@ -24,9 +24,10 @@ export const generateChatCompletion = async (
       })
     );
     // Add the user's current message to the temporary chats array for the API request
-    chats.push({ content: message, role: "user" });
+    const userMessage = { content: message, role: "user" };
+    chats.push(userMessage);
     // Persist the user's current message to their chat history in the database
-    user.chats.push({ content: message, role: "user" });
+    user.chats.push(userMessage);
 
     const config = configureOpenAI();
     // get latest response

@@ -8,7 +8,7 @@ type User = {
 type UserAuth = {
   isLoggedIn: boolean;
   user: User | null;
-  setUser: (formData: User) => void
+  setUser: (formData: User | null) => void
   setIsLoggedIn: (param: boolean) => void
 };
 

@@ -2,7 +2,7 @@ import { lazy } from "react";
 import { IRouterType } from '../types/types';
 import { createBrowserRouter } from 'react-router-dom';
 
-const Signup = lazy(() => import("../pages/Signup"));
+// const Signup = lazy(() => import("../pages/Signup"));
 const Login = lazy(() => import("../pages/Login"));
 const Home = lazy(() => import("../pages/Home"));
 const Chat = lazy(() => import("../pages/Chat"));
@@ -20,17 +20,17 @@ const routes: IRouterType[] = [
       },
       {
         title: "Login",
-        path: "/login",
+        path: "/",
         element: <Login />,
       },
-      {
-        title: "Signup",
-        path: "/signup",
-        element: <Signup />,
-      },
+      // {
+      //   title: "Signup",
+      //   path: "/signup",
+      //   element: <Signup />,
+      // },
       {
         title: "Chat",
-        path: "/",
+        path: "/chat",
         element: <Chat />,
       },
     ]

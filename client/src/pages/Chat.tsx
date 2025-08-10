@@ -1,13 +1,13 @@
-import { KeyboardEvent, useLayoutEffect, useRef, useState, useEffect } from "react";
-import { Box, Avatar, Typography, Button, IconButton } from "@mui/material";
+import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { Box, Typography, Button, IconButton } from "@mui/material";
 import red from "@mui/material/colors/red";
-import { useAuth } from "../context/authContext";
 import { IoMdSend } from "react-icons/io";
 import { CiMenuKebab } from "react-icons/ci";
-import { useLocation, useNavigate } from "react-router-dom";
 import ChatItem from "../components/chat/ChatItem"
 import toast from "react-hot-toast";
 import DeleteModal from "../components/DeleteModal";
+import { useAuth } from "../context/authContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type Message = {
   role: "user" | "assistant";
@@ -16,10 +16,10 @@ type Message = {
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL
 
 const Chat = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const auth = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isAssistantLoading, setisAssistantLoading] = useState<boolean>(false)
@@ -35,8 +35,6 @@ const Chat = () => {
         const data = await response.json()
         if (data) {
           auth?.setUser({ email: data.email, fullName: data.fullName });
-          auth?.setIsLoggedIn(true);
-          toast.success("Already logged in!");
         }
       } catch (error) {
         console.error("CheckAuthStatus error:", error);
@@ -45,7 +43,6 @@ const Chat = () => {
     }
     checkAuthStatus();
   }, [])
-
 
   const handleGenerateChats = async (message: string) => {
     try {
@@ -82,8 +79,12 @@ const Chat = () => {
       setChatMessages((prev) => [...prev, newMessage]);
       const chatData = await handleGenerateChats(content)
       setChatMessages([...chatData.chats])
-    } catch (e) {
-      console.log('error submitting-')
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        console.log(e.message);
+      } else {
+        console.log('Unexpected error', e);
+      }
     } finally {
       setisAssistantLoading(false)
     }
@@ -115,25 +116,21 @@ const Chat = () => {
     }
   }
 
-  // fetchAllChats before the UI is render
-  useLayoutEffect(() => {
-    if (location.pathname === "/chat" && auth?.isLoggedIn) {
-      toast.loading("Loading Chats", { id: "loadchats" });
-      getUserChats().then((data) => {
-        setChatMessages([...data.chats]);
-        toast.success("Successfully loaded chats", { id: "loadchats" });
-      }).catch((err) => {
-        console.log(err);
-        toast.error("Loading Failed", { id: "loadchats" });
-      });
-    }
-  }, [auth]);
-
   useEffect(() => {
-    if (auth?.isLoggedIn) {
-      navigate("/chat");
+    if (location.pathname === "/chat") {
+      if (!auth?.isLoggedIn) {
+        navigate("/");
+        return;
+      }
+      getUserChats()
+        .then((data) => {
+          setChatMessages([...data.chats]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }, [auth?.isLoggedIn]);
+  }, [location.pathname, auth?.isLoggedIn, navigate]);
 
   const handleDeleteChats = async () => {
     try {
@@ -192,28 +189,12 @@ const Chat = () => {
             py: 4,
           }}
         >
-          {auth?.user?.fullName ? (
-            <Avatar
-              sx={{
-                mx: "auto",
-                mt: 2,
-                bgcolor: "white",
-                color: "black",
-                fontWeight: 700,
-              }}
-            >
-              {auth?.user?.fullName[0].toUpperCase()}
-              {auth?.user?.fullName.split(" ")[1][0].toUpperCase()}
-            </Avatar>
-          ) : (
-            <Avatar>F</Avatar>
-          )}
           <Box sx={{ px: 4, mt: 4 }}>
             <Typography sx={{ textAlign: 'center', fontFamily: "work sans", }}>
-              You are talking to a ChatBOT
+              You are talking to a GPT-4o
             </Typography>
             <Typography sx={{ textAlign: 'center', fontFamily: 'work sans', mt: 4, }}>
-              You can ask some questions related to Knowledge, Business, Advices, Education and more.
+              I can generate code and answer questions related to Knowledge, Business, Advices, Education and more.
             </Typography>
           </Box>
           <Button

@@ -14,8 +14,8 @@ const Login = () => {
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState<LoginForm>({
-    email: '',
-    password: ''
+    email: 'testuser@gmail.com',
+    password: '123456'
   })
   const [errors, setErrors] = useState<LoginForm>({});
 
@@ -90,7 +90,7 @@ const Login = () => {
     if (auth?.isLoggedIn) {
       navigate("/chat")
     }
-  }, [auth?.isLoggedIn])
+  }, [auth?.isLoggedIn, navigate])
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -106,10 +106,10 @@ const Login = () => {
   };
 
   return (
-    <Box width={"100%"} height={"100%"} sx={{ display: "flex", itemsCenter: "center", maxWidth: "1200px", margin: "auto", marginTop: "110px", }}>
-      <Box display={{ md: "flex", sm: "none", xs: "none" }} flex={1} ml={{ xs: "0", md: "40px", lg: "0" }}>
+    <Box width={"100%"} height={"100%"} sx={{ display: "flex", itemsCenter: "center", maxWidth: "1200px", margin: "auto", marginTop: "50px", }}>
+      {/* <Box display={{ md: "flex", sm: "none", xs: "none" }} flex={1} ml={{ xs: "0", md: "40px", lg: "0" }}>
         <img src="airobot.png" alt="Rowbot" style={{ maxWidth: "500px" }} />
-      </Box>
+      </Box> */}
       <Box
         flex={"1"}
         display={"flex"}

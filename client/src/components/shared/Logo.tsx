@@ -4,7 +4,7 @@ import LogoImg from "/openai.png"
 
 const Logo = () => {
   return (
-      <Link to={"/"}
+      <Link to={"/home"}
         style={{ display: "flex", alignItems: "center", gap: "15px", marginRight: 'auto' }}>
         <img
           src={LogoImg}
@@ -22,7 +22,7 @@ const Logo = () => {
           }}
         >
           <Typography component="span" sx={{ fontSize: "20px" }}>
-            MERN
+            Chat
           </Typography>
           <Typography component="span">-GPT</Typography>
         </Typography>

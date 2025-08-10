@@ -109,6 +109,8 @@ const ChatItem = ({
                 gap: 2,
                 borderRadius: 2,
                 my: 1,
+                width: "100%",
+                maxWidth: "700px"
               }}
             >
               <Avatar sx={{ ml: "0" }}>
@@ -116,7 +118,7 @@ const ChatItem = ({
               </Avatar>
               <Box>
                 {!messageBlocks ? (
-                  <Typography sx={{ maxWidth: "400px" }}>
+                  <Typography sx={{ maxWidth: "700px" }}>
                     {content}
                   </Typography>
                 ) : (

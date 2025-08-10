@@ -20,9 +20,10 @@ const Header = () => {
       })
       const data = await response.json();
       console.log(data)
+      auth?.setUser(null);
       auth?.setIsLoggedIn(false)
       toast.success("Succesfully Logged out", { id: "userLogout" });
-      navigate("/login")
+      navigate("/")
     } catch (error) {
       console.error("Error logging out:", error);
       toast.error("Unable to logout", { id: "userLogout" });
@@ -58,16 +59,16 @@ const Header = () => {
             <Box sx={{ display: "flex", alignItems: "center", fontSize: { md: "1rem", xs: ".85rem" } }}>
               <NavigationLink
                 text="Login"
-                to="/login"
+                to="/"
                 bg="#00fffc"
                 textColor="black"
               />
-              <NavigationLink
+              {/* <NavigationLink
                 text="Signup"
                 to="/signup"
                 bg="#51538f"
                 textColor="white"
-              />
+              /> */}
             </Box>
           )}
         </Box>
