@@ -20,7 +20,7 @@ const waitForBackend = async () => {
 };
 
 const IsBackendReady = () => (
-  <div className="h-screen w-full flex flex-col gap-4 items-center justify-center">
+  <div className="min-h-screen w-full flex flex-col gap-4 items-center justify-center">
     <Loader className="size-16 text-emerald-500 animate-spin" />
     <p className="uppercase text-lg font-bold text-center px-6">
       The server may take up to 50 seconds to become active. Thank you for your patience.
@@ -33,11 +33,17 @@ const AppLoader = ({ children }: { children: React.ReactNode }) => {
   const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    // Immediately check if backend is ready on mount
-    waitForBackend().then((ready) => {
-      setBackendReady(ready);
+    if (import.meta.env.MODE === "production") {
+      // Only do the backend check in production
+      waitForBackend().then((ready) => {
+        setBackendReady(ready);
+        setChecking(false);
+      });
+    } else {
+      // In development or other envs, skip waiting
+      setBackendReady(true);
       setChecking(false);
-    });
+    }
   }, []);
 
   if (checking) {
@@ -47,7 +53,7 @@ const AppLoader = ({ children }: { children: React.ReactNode }) => {
 
   if (!backendReady) {
     return (
-      <div className="h-screen w-full flex flex-col gap-4 items-center justify-center">
+      <div className="min-h-screen w-full flex flex-col gap-4 items-center justify-center">
         <p className="uppercase text-lg font-bold text-center px-6 text-red-600">
           The server is currently unreachable. Please try again later.
         </p>
