@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Loader } from "lucide-react";
+import { CircularProgress, Box, Typography } from "@mui/material";
 import { axiosInstance } from "../lib/axios";
 
 const waitForBackend = async () => {
@@ -11,7 +11,7 @@ const waitForBackend = async () => {
       await axiosInstance.get("/health");
       isReady = true;
     } catch {
-      await new Promise(res => setTimeout(res, 3000));
+      await new Promise((res) => setTimeout(res, 3000));
       attempts++;
     }
   }
@@ -19,47 +19,71 @@ const waitForBackend = async () => {
   return isReady;
 };
 
+const CenteredContainer = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => (
+  <Box
+    sx={{
+      height: "100vh",
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      px: 3,
+      textAlign: "center",
+      gap: 2,
+    }}
+  >
+    {children}
+  </Box>
+);
+
 const IsBackendReady = () => (
-  <div className="min-h-screen w-full flex flex-col gap-4 items-center justify-center">
-    <Loader className="size-16 text-emerald-500 animate-spin" />
-    <p className="uppercase text-lg font-bold text-center px-6">
+  <CenteredContainer>
+    <CircularProgress color="success" size={48} />
+    <Typography marginTop={2}
+      variant="h6"  textTransform="uppercase" maxWidth={600}>
       The server may take up to 50 seconds to become active. Thank you for your patience.
-    </p>
-  </div>
+    </Typography>
+  </CenteredContainer>
+);
+
+const ErrorMessage = () => (
+  <CenteredContainer>
+    <Typography
+      variant="h6"
+      fontWeight="bold"
+      textTransform="uppercase"
+      color="error"
+      maxWidth={400}
+    >
+      The server is currently unreachable. Please try again later.
+    </Typography>
+  </CenteredContainer>
 );
 
 const AppLoader = ({ children }: { children: React.ReactNode }) => {
   const [backendReady, setBackendReady] = useState(false);
-  const [checking, setChecking] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (import.meta.env.MODE === "production") {
-      // Only do the backend check in production
-      waitForBackend().then((ready) => {
+    const checkBackend = async () => {
+      if (import.meta.env.MODE === "production") {
+        const ready = await waitForBackend();
         setBackendReady(ready);
-        setChecking(false);
-      });
-    } else {
-      // In development or other envs, skip waiting
-      setBackendReady(true);
-      setChecking(false);
-    }
+      } else {
+        setBackendReady(true);
+      }
+      setLoading(true);
+    };
+
+    checkBackend();
   }, []);
 
-  if (checking) {
-    // While waiting, show loading screen 
-    return <IsBackendReady />;
-  }
-
-  if (!backendReady) {
-    return (
-      <div className="min-h-screen w-full flex flex-col gap-4 items-center justify-center">
-        <p className="uppercase text-lg font-bold text-center px-6 text-red-600">
-          The server is currently unreachable. Please try again later.
-        </p>
-      </div>
-    );
-  }
+  if (loading) return <IsBackendReady />;
+  if (!backendReady) return <ErrorMessage />;
 
   return <>{children}</>;
 };

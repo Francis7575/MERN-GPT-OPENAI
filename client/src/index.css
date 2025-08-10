@@ -7,12 +7,14 @@
 
 html,
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
   background: #05101c;
   color: white;
+}
+
+html,
+body,
+#root {
+  height: 100%;
 }
 
 .image-inverted {
