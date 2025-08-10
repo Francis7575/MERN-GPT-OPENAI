@@ -1,4 +1,4 @@
-# MERN-GPT-AI - A chatbot using OPENAI API
+# ChatGPT-4o - A chatbot using OPENAI API (MERN stack)
 This Chatbot application facilitates seamless interaction with the GPT-4 model, delivering intelligent conversational responses. It features a robust user authentication system, including login and signup functionalities, which save a cookie upon successful submission for secure access. Backed by JSON Web Token (JWT) validation, the application ensures a secure and personalized experience. Additionally, it connects directly to the GPT-4 model via the OpenAI API, enhancing its conversational capabilities and ensuring an engaging user experience.
 
 Techologies used: React, Typescript, MaterialUI, Node.js, Express, MongoDB.
